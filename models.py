@@ -18,6 +18,6 @@ class Book(Base):
 class Menu(Base):
     __tablename__ = 'Menu'
 
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     name = Column(String, index=True)
     price = Column(Integer, index=True)
