@@ -40,6 +40,10 @@ async def get_books(db: Session = Depends(get_db)):
 async def get_menues(db: Session = Depends(get_db)):
     return db.query(models.Menu).all()
 
+@router_v1.get('/staff')
+async def get_order(db: Session = Depends(get_db)):
+    return db.query(models.Order, models.Menu).join(models.Menu).all()
+    
 @router_v1.get('/books/{book_id}')
 async def get_book(book_id: int, db: Session = Depends(get_db)):
     return db.query(models.Book).filter(models.Book.id == book_id).first()
