@@ -42,7 +42,7 @@ async def get_menues(db: Session = Depends(get_db)):
 
 @router_v1.get('/staff')
 async def get_order(db: Session = Depends(get_db)):
-    return db.query(models.Order, models.Menu).join(models.Menu).all()
+    return db.query(models.Order).all()
     
 @router_v1.get('/books/{book_id}')
 async def get_book(book_id: int, db: Session = Depends(get_db)):
