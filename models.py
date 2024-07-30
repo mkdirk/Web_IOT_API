@@ -15,3 +15,9 @@ class Book(Base):
     category = Column(String, index=True)
     is_published = Column(Boolean, index=True)
 
+class Menu(Base):
+    __tablename__ = 'Menu'
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, index=True)
+    price = Column(Integer, index=True)
