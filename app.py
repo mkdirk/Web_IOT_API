@@ -46,7 +46,7 @@ async def get_book(book_id: int, db: Session = Depends(get_db)):
 
 @router_v1.get('/menu/{menu_id}')
 async def get_menu(menu_id: int, db: Session = Depends(get_db)):
-    return db.query(models.Menu).filter(models.Book.id == menu_id).first()
+    return db.query(models.Menu).filter(models.Menu.id == menu_id).first()
 
 @router_v1.post('/books')
 async def create_book(book: dict, response: Response, db: Session = Depends(get_db)):
@@ -61,7 +61,7 @@ async def create_book(book: dict, response: Response, db: Session = Depends(get_
 @router_v1.post('/menu')
 async def create_menu(menu: dict, response: Response, db: Session = Depends(get_db)):
     # TODO: Add validation
-    newmenu = models.Menu(title=menu['name'], author=menu['price'])
+    newmenu = models.Menu(name=menu['name'], price=menu['price'])
     db.add(newmenu)
     db.commit()
     db.refresh(newmenu)
