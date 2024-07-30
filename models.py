@@ -1,4 +1,4 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, column
 # from sqlalchemy.orm import relationship
 
 from database import Base
@@ -21,3 +21,12 @@ class Menu(Base):
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     name = Column(String, index=True)
     price = Column(Integer, index=True)
+
+class Order(Base):
+    __tablename__ = 'Order'
+
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    order_id = Column(Integer, index=True)
+    quantity = Column(Integer, index=True)
+    note = Column(String, index=True)
+    total_price = Column(Integer, index=True)
