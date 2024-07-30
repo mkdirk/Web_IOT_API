@@ -36,9 +36,17 @@ app.add_middleware(
 async def get_books(db: Session = Depends(get_db)):
     return db.query(models.Book).all()
 
+@router_v1.get('/menu')
+async def get_menues(db: Session = Depends(get_db)):
+    return db.query(models.Menu).all()
+
 @router_v1.get('/books/{book_id}')
 async def get_book(book_id: int, db: Session = Depends(get_db)):
     return db.query(models.Book).filter(models.Book.id == book_id).first()
+
+@router_v1.get('/menu/{menu_id}')
+async def get_menu(menu_id: int, db: Session = Depends(get_db)):
+    return db.query(models.Menu).filter(models.Book.id == menu_id).first()
 
 @router_v1.post('/books')
 async def create_book(book: dict, response: Response, db: Session = Depends(get_db)):
@@ -50,9 +58,26 @@ async def create_book(book: dict, response: Response, db: Session = Depends(get_
     response.status_code = 201
     return newbook
 
+@router_v1.post('/menu')
+async def create_menu(menu: dict, response: Response, db: Session = Depends(get_db)):
+    # TODO: Add validation
+    newmenu = models.Menu(title=menu['name'], author=menu['price'])
+    db.add(newmenu)
+    db.commit()
+    db.refresh(newmenu)
+    response.status_code = 201
+    return newmenu
+
 @router_v1.patch('/books/{book_id}') #update
 async def update_book(book_id: str, book: dict, response: Response, db: Session = Depends(get_db)):
     result = db.execute(update(models.Book).where(models.Book.id == book_id).values(book))
+    db.commit()
+    response.status_code = 201
+    return result.all
+
+@router_v1.patch('/menu/{menu_id}') #update
+async def update_menu(menu_id: str, menu: dict, response: Response, db: Session = Depends(get_db)):
+    result = db.execute(update(models.Menu).where(models.Menu.id == menu_id).values(menu))
     db.commit()
     response.status_code = 201
     return result.all
