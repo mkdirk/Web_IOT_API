@@ -68,6 +68,18 @@ async def create_menu(menu: dict, response: Response, db: Session = Depends(get_
     response.status_code = 201
     return newmenu
 
+@router_v1.post('/order')
+async def confirm_order(order: dict, response: Response, db: Session = Depends(get_db)):
+    # TODO: Add validation
+    price = db.query(models.Menu).filter(models.Menu.id == order['menuId']).first()
+    all_price = (price*order['quantity'])
+    neworder = models.Order(order_id=order['menuId'], quantity=order['quantity'], note=order['note'], total_price=all_price)
+    db.add(neworder)
+    db.commit()
+    db.refresh(neworder)
+    response.status_code = 201
+    return neworder
+
 @router_v1.patch('/books/{book_id}') #update
 async def update_book(book_id: str, book: dict, response: Response, db: Session = Depends(get_db)):
     result = db.execute(update(models.Book).where(models.Book.id == book_id).values(book))
